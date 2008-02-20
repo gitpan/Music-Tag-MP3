@@ -43,6 +43,12 @@ Then install as normal
    make && make test
    make install
 
+NOTE ON GAPLESS INFO
+
+This is used for a yet-to-be-maybe-someday released ipod library.  It collects
+the required gapless info.  There is a patch to MP3-Info that should be applied
+ONLY if you are interested in experimenting with this.  
+
 TEST FILES
 
 Are based on the sample file for Audio::M4P.  For testing only.

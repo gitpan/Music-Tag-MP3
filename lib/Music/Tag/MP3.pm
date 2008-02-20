@@ -1,5 +1,5 @@
 package Music::Tag::MP3;
-our $VERSION = 0.28;
+our $VERSION = 0.29;
 our @AUTOPLUGIN = qw(mp3);
 
 # Copyright (c) 2007 Edward Allen III. Some rights reserved.
@@ -49,7 +49,7 @@ sub default_options {
     { apic_cover => 1, };
 }
 
-sub decode_uni {
+sub _decode_uni {
     my $in = shift;
 	my $c = unpack( "U", substr( $in, 0, 1 ) );
     if ( ($c) && ($c == 255 )) {
@@ -110,13 +110,13 @@ title, artist, album, track, comment, year and genre
 =cut
 
     eval {
-        $self->info->title( decode_uni( $self->mp3->title ) );
-        $self->info->artist( decode_uni( $self->mp3->artist ) );
-        $self->info->album( decode_uni( $self->mp3->album ) );
-        $self->info->tracknum( decode_uni( $self->mp3->track ) );
-        $self->info->comment( decode_uni( $self->mp3->comment ) );
-        $self->info->year( decode_uni( $self->mp3->year ) );
-        $self->info->genre( decode_uni( $self->mp3->genre ) );
+        $self->info->title( _decode_uni( $self->mp3->title ) );
+        $self->info->artist( _decode_uni( $self->mp3->artist ) );
+        $self->info->album( _decode_uni( $self->mp3->album ) );
+        $self->info->tracknum( _decode_uni( $self->mp3->track ) );
+        $self->info->comment( _decode_uni( $self->mp3->comment ) );
+        $self->info->year( _decode_uni( $self->mp3->year ) );
+        $self->info->genre( _decode_uni( $self->mp3->genre ) );
     };
     warn $@ if $@;
 
@@ -331,7 +331,7 @@ sub set_tag {
 	}
 	if ($self->info->url) {
 		$id3v2->remove_frame('WCOM');
-		$id3v2->add_frame( 'WCOM', 0, url_encode( $self->info->url ) );
+		$id3v2->add_frame( 'WCOM', 0, _url_encode( $self->info->url ) );
 	}
 
     if ( $self->info->encoded_by ) {
@@ -393,7 +393,7 @@ sub set_tag {
         $id3v2->remove_frame('APIC');
         if ( ( $self->options->{apic_cover} ) && ( $self->info->picture ) ) {
             $self->status("Saving Cover to APIC frame");
-            $id3v2->add_frame( 'APIC', apic_encode( $self->info->picture ) );
+            $id3v2->add_frame( 'APIC', _apic_encode( $self->info->picture ) );
         }
     }
     $self->status("Writing ID3v1 Tag for $filename");
@@ -418,7 +418,7 @@ sub close {
 	}
 }
 
-sub apic_encode {
+sub _apic_encode {
     my $code = shift;
     my @PICTYPES = ( "Other",
                      "32x32 pixels 'file icon' (PNG only)",
@@ -448,10 +448,40 @@ sub apic_encode {
              $code->{_Data} );
 }
 
-sub url_encode {
+sub _url_encode {
     my $url = shift;
     return ($url);
 }
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item default_options
+
+Returns the default options for the plugin.  
+
+=item set_tag
+
+Save object back to ID3v2.3 and ID3v1 tag.
+
+=item get_tag
+
+Load information from ID3v2 and ID3v1 tags.
+
+=item strip_tag
+
+Remove the tag from the file.
+
+=item close
+
+Close the file and destroy the MP3::Tag object.
+
+=item mp3
+
+Returns the MP3::Tag object
 
 =back
 
@@ -466,6 +496,10 @@ Set to false to disable writing picture to tag.  True by default.
 =item ignore_apic
 
 Ignore embeded picture.
+
+=item calculate_gapless
+
+Calculate gapless playback information.  Requires patched version of MP3::Info to work.
 
 =back
 
@@ -486,15 +520,15 @@ L<MP3::Tag>, L<MP3::Info>
 
 Edward Allen III <ealleniii _at_ cpan _dot_ org>
 
-
-=head1 COPYRIGHT
-
-Copyright (c) 2007 Edward Allen III. Some rights reserved.
+=head1 LICENSE
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the Artistic License, distributed
 with Perl.
 
+=head1 COPYRIGHT
+
+Copyright (c) 2007 Edward Allen III. Some rights reserved.
 
 =cut
 
