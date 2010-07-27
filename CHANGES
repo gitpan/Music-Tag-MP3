@@ -1,3 +1,17 @@
+CHANGES
+	Release Name: 0.40_01
+		*	Started using git and github
+
+		*	Normalized version accross plugins
+
+		*	POD Changes
+
+		*	Revised Testing 
+
+		*	Capability Methods
+
+		*	Started using hash tables for tags, simplifying code and testing.
+
     Release Name: 0.32
         *   Changed to TXXX:ALBUMARTISTSORT from TXXX:MusicBrainz Album
             Artist Sortname (will still read both). This is to partially
