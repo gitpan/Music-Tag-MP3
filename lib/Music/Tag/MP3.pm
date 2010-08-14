@@ -1,7 +1,7 @@
 package Music::Tag::MP3;
 use strict;
 use warnings;
-our $VERSION = .40_01;
+our $VERSION = .40_02;
 
 # Copyright (c) 2007,2010 Edward Allen III. Some rights reserved.
 
@@ -355,7 +355,7 @@ Music::Tag::MP3 - Plugin module for Music::Tag to get information from id3 tags
 	use Music::Tag
 
 	my $info = Music::Tag->new($filename, { quiet => 1 }, "MP3");
-	$info->get_info();
+	$info->get_tag();
    
 	print "Artist is ", $info->artist;
 
