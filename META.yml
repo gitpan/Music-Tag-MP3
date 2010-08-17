@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Music-Tag-MP3
-version:            0.4002
+version:            0.4101
 abstract:           Plugin module for Music::Tag to get information from id3 tags
 author:
     - Edward Allen (ealleniii _at_ cpan _dot_ org)
@@ -18,7 +18,7 @@ requires:
     IO::File:      1.13
     MP3::Info:     1.23
     MP3::Tag:      1.13
-    Music::Tag:    0.27
+    Music::Tag:    0.4101
     Test::More:    0
 no_index:
     directory:
